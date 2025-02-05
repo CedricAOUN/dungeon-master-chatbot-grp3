@@ -24,8 +24,7 @@ function displayMessage(message, className) {
 }
 
 async function fetchResponse(userInput) {
-    // Note: `process.env.OPEN_AI_API_KEY` won't work in client-side JavaScript
-    const openAIKey = ""; // Directly use the API key for testing, but remember to replace this with a secure method for production
+    const openAIKey = config.OPEN_AI_API_KEY; // Directly use the API key for testing, but remember to replace this with a secure method for production
     try {
         const response = await fetch('https://api.openai.com/v1/completions', {
             method: 'POST',
