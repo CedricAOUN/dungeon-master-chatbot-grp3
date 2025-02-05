@@ -22,7 +22,7 @@ function displayMessage(message, className) {
 }
 
 async function fetchResponse(userInput) {
-    const openAIKey = 'CLE OPEN AI'; // This is unsafe! Do not expose your API keys in client-side code.
+    const openAIKey = process.env.OPEN_AI_API_KEY;
     try {
         const response = await fetch('https://api.openai.com/v1/completions', {
             method: 'POST',
