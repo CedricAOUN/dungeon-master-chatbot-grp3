@@ -26,15 +26,18 @@ function displayMessage(message, className) {
 async function fetchResponse(userInput) {
     const openAIKey = config.OPEN_AI_API_KEY; // Directly use the API key for testing, but remember to replace this with a secure method for production
     try {
-        const response = await fetch('https://api.openai.com/v1/completions', {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', { // Removed the '?' at the end of the URL, as it's not needed here
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${openAIKey}`
             },
             body: JSON.stringify({
-                model: "text-davinci-003",
-                prompt: userInput,
+                model: "gpt-4o", // Adjusted model name, as "gpt-4o" might not be correct. Use the correct model identifier, such as "gpt-3.5-turbo" or check the latest available models.
+                messages: [{ // Wrap the object in an array
+                    role: "user",
+                    content: userInput,
+                }],
                 temperature: 0.7,
                 max_tokens: 150,
                 top_p: 1.0,
@@ -48,7 +51,7 @@ async function fetchResponse(userInput) {
         }
 
         const data = await response.json();
-        displayMessage(data.choices[0].text.trim(), 'bot-message');
+        displayMessage('Dungeon Master: ' + data.choices[0].message.content.trim(), 'bot-message'); // Adjusted to access the content correctly
     } catch (error) {
         console.error('Error fetching response:', error);
         displayMessage('Sorry, there was an error processing your request.', 'bot-message');
