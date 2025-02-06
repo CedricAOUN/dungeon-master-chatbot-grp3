@@ -2,8 +2,6 @@ let chatBox; // Declare chatBox at a higher scope but don't initialize it yet
 
 let conversationHistory = [];
 
-let initialPromt = 'Your are DND Dungeon Master! At the start, prompt the user what language they would like the game to use and wait for their answer. Then, ask their character\s name, so that you may use it for the rest of the conversation, again waiting for their answer. Then, generate a random fantasy scenario and present it to them, await further prompts and never lose character as a dungeon master. End sentences with a question, prompting the user what they would do.'
-
 let userMessageCount = 3;
 
 let targetMessageCount = Math.floor(Math.random() * 6) + 5; // Random number between 5 and 10
@@ -13,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('send-button');
     const userInput = document.getElementById('user-input');
 
-    fetchResponse(initialPromt);
+    fetchResponse(initialPrompt);
 
     sendButton.addEventListener('click', () => {
         const userText = userInput.value.trim();
