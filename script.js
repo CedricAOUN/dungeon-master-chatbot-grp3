@@ -10,6 +10,7 @@ let monsterHp = 0;
 
 let monsterContainerElement;
 let monsterHpElement;
+let monsterImgElement;
 
 document.addEventListener('DOMContentLoaded', () => {
     chatBox = document.getElementById('chat-box');
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startButton = document.getElementById('start-button');
     monsterContainerElement = document.getElementById('monster-container');
     monsterHpElement = document.getElementById('monster-hp');
+    monsterImgElement = document.getElementById('monster-img');
 
     fetchResponse(initialPrompt); // Replace 'initialPrompt' with your actual initial prompt
 
@@ -74,7 +76,6 @@ async function fetchResponse(userInput) {
         let scenario = "What will you do next?";
         if (userMessageCount >= targetMessageCount && monsterHp == 0) { // Check against the target message count
             const monster = await getRandomMonster();
-            const monsterImgElement = document.getElementById('monster-img');
             const monsterNameElement = document.getElementById('monster-name');
 
             if (monster) {
@@ -225,6 +226,7 @@ function monsterHandler(msg) {
         monsterHp = 0;
         monsterContainerElement.style.display = 'none';
         monsterHpElement.innerText = '';
+        monsterImgElement.src = null;
     } else if (dmgMatch) {
         monsterHp -= parseInt(dmgMatch[1], 10);
         monsterHpElement.innerText = monsterHp;
