@@ -11,21 +11,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('send-button');
     const userInput = document.getElementById('user-input');
 
-    fetchResponse(initialPrompt);
+    fetchResponse('initialPrompt'); // Replace 'initialPrompt' with your actual initial prompt
 
     sendButton.addEventListener('click', () => {
+        sendMessage();
+    });
+
+    userInput.addEventListener('keydown', (event) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault(); // Prevent the default action to avoid form submission or newline
+            sendMessage();
+        }
+    });
+
+    function sendMessage() {
         const userText = userInput.value.trim();
         if (userText) {
             displayMessage(userText, 'user-message', true);
             fetchResponse(userText);
-            userInput.value = ''; // Clear input field
-            userMessageCount++; // Increase the counter with each user message
+            userInput.value = ''; // Clear input field after sending
+            userMessageCount++; // Increase the user message count
         }
-    });
+    }
 });
 
 async function fetchResponse(userInput) {
-    const openAIKey = config.OPEN_AI_API_KEY;
+    const openAIKey = config.OPEN_AI_API_KEY;; // Make sure to use your actual API key
     const sendButton = document.getElementById('send-button');
 
     sendButton.disabled = true;
@@ -88,7 +99,6 @@ async function fetchResponse(userInput) {
         sendButton.textContent = "Send";
     }
 }
-
 
 async function getRandomMonster() {
     try {
