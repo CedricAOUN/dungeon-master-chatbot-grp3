@@ -138,6 +138,8 @@ async function fetchResponse(userInput) {
         loader.classList.remove('loader');
 
         monsterHandler(botMessage);
+        const lastMessage = chatBox.lastElementChild;
+        lastMessage.scrollIntoView({ behavior: "smooth" });
     } catch (error) {
         console.error('Error fetching response:', error);
         loader.textContent = "Sorry, there was an error processing your request.";
