@@ -7,10 +7,20 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="chat-container">
+    <div id='monster-container' class="container" style='display: none;'>
+        <img id="monster-img">
+        <p id="monster-name"></p>
+    </div>
+    <div id="chat-container" class="container shadow">
         <div id="chat-box"></div>
-        <input type="text" id="user-input" placeholder="Ask the chatbot for a scenario...">
-        <button id="send-button">Send</button>
+        <input type="text" id="user-input" placeholder="Your response..." style="display: none;">
+        <select id="lang-select" class="fire">
+            <option value="English">English</option>
+            <option value="Francais">Francais</option>
+            <option value="Espagnol">Espagnol</option>
+        </select>
+        <button class='button fire' id="start-button">Start</button>
+        <button class='button fire' id="send-button" style="display: none;">Send</button>
     </div>
 
     <script src="config.js"></script>
