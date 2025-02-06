@@ -4,13 +4,17 @@ body {
     margin: 0;
     padding: 20px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 95vh;
     background: url(background.png);
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+#icon {
+    height: 18px;
+    width: 18px;
 }
 
 #chat-container {
@@ -352,4 +356,6 @@ input.shadow:focus {
 
 img {
     width: 100px;
+    border: 6px solid #5B3319;
+    box-shadow: 0 0 30px rgba(255, 223, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.5);
 }

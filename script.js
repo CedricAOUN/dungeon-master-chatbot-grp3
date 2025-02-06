@@ -6,12 +6,19 @@ let userMessageCount = 3;
 
 let targetMessageCount = Math.floor(Math.random() * 6) + 5; // Random number between 5 and 10
 
+let monsterHp = 0;
+
+let monsterContainerElement;
+let monsterHpElement;
+
 document.addEventListener('DOMContentLoaded', () => {
     chatBox = document.getElementById('chat-box');
     const sendButton = document.getElementById('send-button');
     const userInput = document.getElementById('user-input');
     const langSelect = document.getElementById('lang-select');
     const startButton = document.getElementById('start-button');
+    monsterContainerElement = document.getElementById('monster-container');
+    monsterHpElement = document.getElementById('monster-hp');
 
     fetchResponse(initialPrompt); // Replace 'initialPrompt' with your actual initial prompt
 
@@ -65,15 +72,13 @@ async function fetchResponse(userInput) {
 
     try {
         let scenario = "What will you do next?";
-        if (userMessageCount >= targetMessageCount) { // Check against the target message count
+        if (userMessageCount >= targetMessageCount && monsterHp == 0) { // Check against the target message count
             const monster = await getRandomMonster();
             const monsterImgElement = document.getElementById('monster-img');
             const monsterNameElement = document.getElementById('monster-name');
-            const monsterContainerElement = document.getElementById('monster-container');
 
             if (monster) {
-                console.log(monster);
-                scenario = `A wild ${monster.name} appears! What do you do?`;
+                scenario = `A wild ${monster.name} with ${monster.hit_points} HP appears! What do you do?`;
                 monsterContainerElement.style.display = 'block';
 
                 // Create a loader inside the monster container
@@ -91,7 +96,8 @@ async function fetchResponse(userInput) {
                     monsterImgElement.src = monsterImageUrl;
                     monsterImgElement.style.display = 'block';
                     monsterNameElement.innerHTML = monster.name;
-
+                    monsterHp = monster.hit_points;
+                    monsterHpElement.innerText = monsterHp;
                     // Remove the loader once the image is ready
                     monsterLoader.remove();
                 }
@@ -130,6 +136,8 @@ async function fetchResponse(userInput) {
 
         loader.textContent = "Dungeon Master: " + botMessage;
         loader.classList.remove('loader');
+
+        monsterHandler(botMessage);
     } catch (error) {
         console.error('Error fetching response:', error);
         loader.textContent = "Sorry, there was an error processing your request.";
@@ -206,4 +214,18 @@ function displayMessage(message, className, isUser = false) {
     messageDiv.className = className;
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function monsterHandler(msg) {
+    const dmgMatch = msg.match(/\[DMG\]:\s*(\d+)/);
+    const isDefeated = msg.includes('[DEFEATED]');
+    if (isDefeated) {
+        monsterHp = 0;
+        monsterContainerElement.style.display = 'none';
+        monsterHpElement.innerText = '';
+    } else if (dmgMatch) {
+        monsterHp -= parseInt(dmgMatch[1], 10);
+        monsterHpElement.innerText = monsterHp;
+    } 
+    else return;
 }
