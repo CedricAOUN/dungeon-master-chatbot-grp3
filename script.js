@@ -186,7 +186,7 @@ function getRandomTargetMessageCount() {
 }
 
 function monsterHandler(msg) {
-    if (msg.includes('[DEFEATED]')) {
+    if (msg.includes('[BATTLE_END]')) {
         monsterHp = 0;
         monsterContainerElement.style.display = 'none';
         monsterHpElement.innerText = '';
