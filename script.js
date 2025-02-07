@@ -52,6 +52,9 @@ function sendMessage() {
 
 async function fetchResponse(userInput) {
     const sendButton = document.getElementById('send-button');
+    const startTime = new Date();
+    let botStatus = {};  // Ensure it's always an object to prevent errors
+    let response;  // Declare response outside try
     toggleSendButton(sendButton, true);
 
     conversationHistory.push({ role: "user", content: userInput });
@@ -59,13 +62,28 @@ async function fetchResponse(userInput) {
     
     try {
         let scenario = await checkForMonsterEncounter();
-        const response = await getOpenAIResponse(scenario);
-        handleBotResponse(response, loader);
+        response = await getOpenAIResponse(scenario);
+        botStatus = handleBotResponse(response, loader) || {}; // Ensure it always returns an object
     } catch (error) {
         console.error('Error fetching response:', error);
         loader.textContent = "Error processing request.";
     } finally {
         toggleSendButton(sendButton, false);
+        console.log(response); // Debugging to check response status
+
+        const timeElapsed = ((new Date() - startTime) / 1000).toFixed(2) + 's';
+
+        // Only log if response exists and webhook URL is set
+        if (config.webhookURL && conversationHistory.length > 4 && response) {
+            logToGoogleSheets(
+                new Date(),
+                response.status || 200, // Avoid errors if response lacks status
+                userInput,
+                botStatus.msg || response.error || "No message available",
+                timeElapsed,
+                botStatus.tokens || 0
+            );
+        }
     }
 }
 
@@ -104,6 +122,8 @@ function handleBotResponse(data, loader) {
     loader.classList.remove('loader');
     monsterHandler(botMessage);
     chatBox.lastElementChild.scrollIntoView({ behavior: "smooth" });
+
+    return { tokens: data.usage.total_tokens, msg: botMessage } ;
 }
 
 async function handleMonsterEncounter(monster) {
@@ -196,4 +216,17 @@ function monsterHandler(msg) {
         if (dmgMatch) monsterHp -= parseInt(dmgMatch[1], 10);
         monsterHpElement.innerText = monsterHp;
     }
+}
+
+function logToGoogleSheets(date, status, prompt, aiResponse, responseTime, tokens) {
+    const url = new URL(config.webhookURL);
+    
+    url.searchParams.append("Date", date);
+    url.searchParams.append("Prompt", prompt);
+    url.searchParams.append("AI-response", aiResponse);
+    url.searchParams.append("Status", status);
+    url.searchParams.append("Response-time", responseTime);
+    url.searchParams.append("tokens-used", tokens);
+    fetch(url, { method: "GET" })
+    .catch(err => console.log("Error logging to Google Sheets:", err));
 }
