@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function fetchResponse(userInput) {
     const openAIKey = config.OPEN_AI_API_KEY; // Make sure to use your actual API key
     const sendButton = document.getElementById('send-button');
+    const startTime = new Date();
 
     sendButton.disabled = true;
     sendButton.textContent = "Thinking...";
@@ -133,11 +134,14 @@ async function fetchResponse(userInput) {
         const data = await response.json();
         const botMessage = data.choices[0].message.content.trim();
 
+        console.log(data);
         conversationHistory.push({ role: "assistant", content: botMessage });
 
         loader.textContent = "Dungeon Master: " + botMessage;
         loader.classList.remove('loader');
 
+        const elapsedTime = (new Date() - startTime) / 1000;
+        if(conversationHistory.length > 2) logToGoogleSheets(new Date(), 200, userInput, botMessage, elapsedTime.toFixed(2), data.usage.total_tokens);
         monsterHandler(botMessage);
         const lastMessage = chatBox.lastElementChild;
         lastMessage.scrollIntoView({ behavior: "smooth" });
@@ -232,4 +236,19 @@ function monsterHandler(msg) {
         monsterHpElement.innerText = monsterHp;
     } 
     else return;
+}
+
+function logToGoogleSheets(date, status, prompt, aiResponse, responseTime, tokens) {
+    const url = new URL(config.webhookURL);
+    
+    url.searchParams.append("Date", date);
+    url.searchParams.append("Prompt", prompt);
+    url.searchParams.append("AI-response", aiResponse);
+    url.searchParams.append("Status", status);
+    url.searchParams.append("Response-time", responseTime);
+    url.searchParams.append("tokens-used", tokens);
+
+    fetch(url, { method: "GET" })
+    .then(data => console.log("Logged successfully:", data))
+    .catch(err => console.log("Error logging to Google Sheets:", err));
 }
