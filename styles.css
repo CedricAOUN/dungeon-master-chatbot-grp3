@@ -7,43 +7,32 @@ body {
     justify-content: center;
     align-items: center;
     height: 95vh;
-    background: url(assets/background.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: url(assets/background.jpg) no-repeat center center/cover;
     overflow-y: hidden;
 }
 
 #icon {
-    height: 18px;
-    width: 18px;
+    height: 14px;
+    width: 14px;
 }
 
 #chat-container {
     width: 90%;
     max-width: 800px;
     border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
     font-size: 18px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    filter: opacity(90%);
+    opacity: 90%;
 }
 
 #chat-box {
     height: 400px;
     overflow-y: auto;
     padding: 20px;
-}
-
-#chat-box div {
-    margin-bottom: 20px;
-    line-height: 1.4;
-}
-
-#chat-box div:last-child {
-    margin-bottom: 0;
 }
 
 .user-message {
@@ -59,12 +48,6 @@ body {
     padding: 5px 10px;
 }
 
-
-#send-button:disabled {
-    background-color: gray;
-    cursor: wait;
-}
-
 .loader {
     font-style: italic;
     opacity: 0.7;
@@ -72,35 +55,36 @@ body {
 }
 
 @keyframes blink {
-    0% { opacity: 0.2; }
+    0%, 100% { opacity: 0.2; }
     50% { opacity: 1; }
-    100% { opacity: 0.2; }
 }
 
+/* Dropdown */
 .select-container {
     position: relative;
     display: inline-block;
 }
 
-/* Base Select Styling */
 select {
-    font-family: 'MedievalSharp';
+    font-family: 'MedievalSharp', cursive;
     font-size: 18px;
     padding: 12px 40px 12px 20px;
-    background: url('https://www.transparenttextures.com/patterns/aged-paper.png'); /* Parchment texture */
-    border: 4px solid #5B3319; /* Dark leather border */
+    background: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+    border: 4px solid #5B3319;
     border-radius: 10px;
     appearance: none;
     outline: none;
     cursor: pointer;
-    color: #3E1F0D;
-    background-color: white;
-    text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
+    color: #FFD700;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
 }
 
-/* Custom dropdown arrow */
+select option {
+    background-color:#5B3319;
+    filter: opacity('80%');
+}
+
 .select-container::after {
     content: "🔻";
     font-size: 18px;
@@ -109,36 +93,20 @@ select {
     right: 15px;
     transform: translateY(-50%);
     pointer-events: none;
-    transition: transform 0.3s ease-in-out;
 }
 
-/* Hover & Focus Effects */
-select:hover {
-    border-color: #8B4513; /* Warmer brown */
-    background-color: rgba(255, 228, 181, 0.9);
-}
-
-select:focus {
-    border-color: #D4AF37; /* Golden glow */
+select:hover, select:focus {
+    border-color: #D4AF37;
     box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.7);
     animation: rollForInitiative 0.3s ease-in-out;
 }
 
-/* Rolling Animation */
 @keyframes rollForInitiative {
-    0% { transform: rotate(-2deg) translateX(-2px); }
+    0%, 100% { transform: rotate(0deg) translateX(0px); }
     50% { transform: rotate(2deg) translateX(2px); }
-    100% { transform: rotate(0deg) translateX(0px); }
 }
 
-/* Dropdown options */
-select option {
-    background: #F5DEB3; /* Light parchment */
-    color: #3E1F0D;
-    font-family: 'MedievalSharp', cursive;
-}
-
-
+/* Buttons */
 .button {
     font-family: 'MedievalSharp', cursive;
     font-size: 18px;
@@ -149,138 +117,42 @@ select option {
     color: #FFD700;
     text-shadow: 1px 1px 5px rgba(255, 215, 0, 0.7);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), inset 0 2px 4px rgba(255, 215, 0, 0.3);
-    transition: all 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
 }
 
-/* Magic glow on hover */
 .button:hover {
-    background: linear-gradient(145deg, #A0522D, #6B3D1F);
     border-color: #D4AF37;
     box-shadow: 0 0 15px rgba(255, 223, 0, 0.9), inset 0 2px 10px rgba(255, 223, 0, 0.5);
 }
 
-/* Click animation - slight shake */
 .button:active {
     transform: scale(0.96) rotate(-2deg);
-    animation: rollForAttack 0.2s ease-in-out;
 }
 
-/* Rolling D20 effect */
-@keyframes rollForAttack {
-    0% { transform: rotate(-2deg) scale(0.98); }
-    50% { transform: rotate(2deg) scale(0.97); }
-    100% { transform: rotate(0deg) scale(1); }
-}
-
-/* Elemental Button Styles */
-.button.fire {
-    background: linear-gradient(145deg, #8B0000, #5B0000);
-    border-color: #FF4500;
-    color: #FFD700;
-}
-.button.fire:hover {
-    box-shadow: 0 0 20px rgba(255, 69, 0, 0.9);
-}
-
-.button.ice {
-    background: linear-gradient(145deg, #4682B4, #1E90FF);
-    border-color: #00BFFF;
-    color: #E0FFFF;
-}
-.button.ice:hover {
-    box-shadow: 0 0 20px rgba(173, 216, 230, 0.9);
-}
-
-.button.shadow {
-    background: linear-gradient(145deg, #2E2E2E, #1C1C1C);
-    border-color: #6A0DAD;
-    color: #D8BFD8;
-}
-.button.shadow:hover {
-    box-shadow: 0 0 20px rgba(106, 13, 173, 0.9);
-}
-
-.input-container {
-    position: relative;
-    display: inline-block;
-}
-
-/* Base Input Styling */
+/* Inputs */
 input {
     font-family: 'MedievalSharp', cursive;
     font-size: 18px;
     padding: 12px 15px;
     width: auto;
     background: url('https://www.transparenttextures.com/patterns/aged-paper.png'); /* Parchment texture */
-    border: 4px solid #5B3319; /* Dark leather-like edges */
+    border: 4px solid #D4AF37; /* Golden glow */
     border-radius: 8px;
-    color: #3E1F0D;
-    background-color: white;
+    color: #FFD700; /* Golden text */
     text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
     box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
     outline: none;
     transition: all 0.3s ease-in-out;
 }
 
-/* Enchanted glow effect when focused */
+
 input:focus {
-    border-color: #D4AF37; /* Golden glow */
+    border-color: #D4AF37;
     box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.7);
 }
 
-/* Placeholder styling (mystical whispers...) */
-input::placeholder {
-    font-style: italic;
-    color: rgba(62, 31, 13, 0.6);
-    text-shadow: none;
-}
-
-/* Error shake animation (when failing a skill check) */
-input.invalid {
-    border-color: #8B0000;
-    box-shadow: 0px 0px 12px rgba(139, 0, 0, 0.8);
-    animation: failCheck 0.2s ease-in-out;
-}
-
-@keyframes failCheck {
-    0% { transform: translateX(0px); }
-    25% { transform: translateX(-4px); }
-    50% { transform: translateX(4px); }
-    75% { transform: translateX(-2px); }
-    100% { transform: translateX(0px); }
-}
-
-/* Special Elemental Styles */
-input.fire {
-    border-color: #FF4500;
-    background: linear-gradient(145deg, #8B0000, #5B0000);
-    color: #FFD700;
-}
-input.fire:focus {
-    box-shadow: 0 0 20px rgba(255, 69, 0, 0.9);
-}
-
-input.ice {
-    border-color: #00BFFF;
-    background: linear-gradient(145deg, #4682B4, #1E90FF);
-    color: #E0FFFF;
-}
-input.ice:focus {
-    box-shadow: 0 0 20px rgba(173, 216, 230, 0.9);
-}
-
-input.shadow {
-    border-color: #6A0DAD;
-    background: linear-gradient(145deg, #2E2E2E, #1C1C1C);
-    color: #D8BFD8;
-}
-input.shadow:focus {
-    box-shadow: 0 0 20px rgba(106, 13, 173, 0.9);
-}
-
+/* Containers */
 .container {
     font-family: 'MedievalSharp', cursive;
     max-width: 600px;
@@ -293,68 +165,15 @@ input.shadow:focus {
     color: #FFD700;
     text-shadow: 2px 2px 8px rgba(255, 223, 0, 0.7);
     box-shadow: 0 0 30px rgba(255, 223, 0, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.5);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-    animation: floatMagic 3s infinite ease-in-out alternate;
+    transition: 0.3s ease-in-out;
 }
 
-/* Glowing runes around the border */
-.container::before {
-    content: "";
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    border: 3px solid transparent;
-    border-image: linear-gradient(90deg, #FFD700, #D4AF37, #FFD700);
-    z-index: -1;
-    border-image-slice: 1;
-    box-shadow: 0 0 15px rgba(255, 223, 0, 0.5);
-    animation: pulseGlow 2s infinite alternate;
-}
-
-/* Mystic floating effect */
 @keyframes floatMagic {
-    0% { transform: translateY(0px); }
-    100% { transform: translateY(-5px); }
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
 }
 
-/* Glowing pulse effect */
-@keyframes pulseGlow {
-    0% { box-shadow: 0 0 15px rgba(255, 223, 0, 0.5); }
-    100% { box-shadow: 0 0 30px rgba(255, 223, 0, 0.8); }
-}
-
-/* Arcane fire variant */
-.container.fire {
-    background: linear-gradient(145deg, #8B0000, #5B0000);
-    border-color: #FF4500;
-}
-.container.fire::before {
-    border-image: linear-gradient(90deg, #FF4500, #D4145A, #FF4500);
-}
-
-/* Ice variant */
-.container.ice {
-    background: linear-gradient(145deg, #1E90FF, #4682B4);
-    border-color: #00BFFF;
-}
-.container.ice::before {
-    border-image: linear-gradient(90deg, #00BFFF, #ADD8E6, #00BFFF);
-}
-
-/* Shadow variant */
-.container.shadow {
-    background: linear-gradient(145deg, #2E2E2E, #1C1C1C);
-    border-color: #6A0DAD;
-}
-.container.shadow::before {
-    border-image: linear-gradient(90deg, #6A0DAD, #D8BFD8, #6A0DAD);
-}
-
-
+/* Images */
 img {
     width: 100px;
     border: 6px solid #5B3319;
