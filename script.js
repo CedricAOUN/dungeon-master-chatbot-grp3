@@ -141,7 +141,7 @@ async function fetchResponse(userInput) {
         loader.classList.remove('loader');
 
         const elapsedTime = (new Date() - startTime) / 1000;
-        if(conversationHistory.length > 2) logToGoogleSheets(new Date(), 200, userInput, botMessage, elapsedTime.toFixed(2), data.usage.total_tokens);
+        if(conversationHistory.length > 2 && config.webhookURL) logToGoogleSheets(new Date(), 200, userInput, botMessage, elapsedTime.toFixed(2), data.usage.total_tokens);
         monsterHandler(botMessage);
         const lastMessage = chatBox.lastElementChild;
         lastMessage.scrollIntoView({ behavior: "smooth" });
